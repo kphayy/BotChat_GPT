@@ -5,6 +5,6 @@ app.get("/", function(req, res){
     return res.status(200).send("hello word");
 })
 
-app.listen("/", () => {
+app.listen(8000, () => {
     console.log("Server is running...");
 })

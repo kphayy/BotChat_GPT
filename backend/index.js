@@ -1,10 +1,23 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const routes = require('./routes');
+const connectDB = require('./config/db');
+
+dotenv.config();
+
 const app = express();
 
-app.get("/", function(req, res){
-    return res.status(200).send("hello world 2222222s");
-})
+//Connect DB
+connectDB();
 
-app.listen(8000, () => {
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(cookieParser());
+
+//Routes
+routes(app);
+
+app.listen(process.env.PORT || 8000, () => {
     console.log("Server is running...");
 })

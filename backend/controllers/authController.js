@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../config/db");
 
 const authController = {
-  registerUser: async (req, res) => {
+  register: async (req, res) => {
     try {
       const { name, email, password, avatar } = req.body;
 
@@ -38,7 +38,7 @@ const authController = {
       res.status(500).json(err);
     }
   },
-  loginUser: async (req, res) => {
+  login: async (req, res) => {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });

@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+.app {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url('https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/SKD-bqAkQjhvrjayf/videoblocks-cartoon-animation-background-with-motion-clouds-abstract-backdrop-luxury-and-elegant-dynamic-animation-footage-of-cartoon-or-kids-theme_r_qfaqvri_thumbnail-1080_01.png');
+    background-size: cover;
+    background-position: center;
+}

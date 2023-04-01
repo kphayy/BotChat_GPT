@@ -1,11 +1,13 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../config/db");
+const User = require("../models/userModel");
 
 const authController = {
   register: async (req, res) => {
     try {
+      console.log(req.body)
       const { name, email, password, avatar } = req.body;
+      console.log(">>>>>>" + name);
 
       if (!name || !email || !password) {
         res.status(400).json("Please enter all the required fields");
@@ -31,7 +33,7 @@ const authController = {
         password: hash,
       });
 
-      const user = await newUser.save();
+      const user = await User.create(newUser);
 
       res.status(200).json(user);
     } catch (err) {
@@ -46,29 +48,30 @@ const authController = {
         return res.status(404).json("Wrong username");
       }
 
+      console.log("Password >>>> " + user.password  + ">>>>> " + password) ;
+
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
         return res.status(404).json("Wrong password");
       }
 
       if (user && validPassword) {
-        const newAccessToken = AuthenController.generateAccessToken(user);
-        const newRefreshToken = AuthenController.generateRefreshToken(user);
+        const newAccessToken = authController.generateAccessToken(user);
+        const newRefreshToken = authController.generateRefreshToken(user);
 
         await User.updateOne(
           { email: user.email },
           { refreshToken: newRefreshToken }
         );
 
-        res.cookie("refreshToken", newRefreshToken, {
+        const { password, refreshToken, ...rest } = user._doc;
+
+        return res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
           sameSite: "strict",
           scure: false,
-        });
+        }).status(200).json({ ...rest, accessToken: newAccessToken });
 
-        const { password, refreshToken, ...rest } = user._doc;
-
-        return res.status(200).json({ ...rest, accessToken: newAccessToken });
       }
     } catch (err) {
       res.status(500).json(err);
@@ -122,7 +125,7 @@ const authController = {
       },
       process.env.JWT_ACCESS_TOKEN,
       {
-        expiresIn: "1m",
+        expiresIn: "5m",
       }
     );
   },

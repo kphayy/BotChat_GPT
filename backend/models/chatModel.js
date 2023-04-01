@@ -6,7 +6,7 @@ const chatModel =  mongoose.Schema({
         type: mongoose.Schema.Types.Object,
         ref: "Message"
     },
-    isUser: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+    user: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
 }, {
     timestamps: true
 });
